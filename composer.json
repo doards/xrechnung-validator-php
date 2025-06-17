@@ -1,0 +1,19 @@
+{
+  "name": "doards/xrechnung-validator",
+  "description": "XRechnung Validator",
+  "type": "library",
+  "autoload": {
+    "psr-4": {
+      "Doards\\XRechnungValidator\\": "src/"
+    }
+  },
+  "authors": [
+    {
+      "name": "ibodc",
+      "email": "ibo.dc@doards.com"
+    }
+  ],
+  "require-dev": {
+    "phpunit/phpunit": "^12.2"
+  }
+}

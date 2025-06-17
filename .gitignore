@@ -1,0 +1,9 @@
+#DEV Files
+.vscode
+.phpdoc
+.phpunit.cache
+test
+vendor
+
+#Mac
+.DS_Store
