@@ -1,7 +1,8 @@
 {
   "name": "doards/xrechnung-validator",
-  "description": "XRechnung Validator",
+  "description": "A PHP library to validate XRechnungen (UBL + EN16931) using SaxonC",
   "type": "library",
+  "license": "MIT",
   "autoload": {
     "psr-4": {
       "Doards\\XRechnungValidator\\": "src/"

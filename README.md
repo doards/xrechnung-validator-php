@@ -9,11 +9,8 @@ This library validates **electronic invoices** (XRechnungen) according to:
 
 ## 📁 Installation
 
-Include this project in your PHP codebase (or copy the validator classes into your namespace).  
-Autoloading via Composer is supported if you define it in `composer.json`.
-
 ```bash
-composer dump-autoload
+composer require doards/xrechnung-validatorcomposer
 ```
 
 ---
