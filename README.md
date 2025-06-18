@@ -10,7 +10,7 @@ This library validates **electronic invoices** (XRechnungen) according to:
 ## 📁 Installation
 
 ```bash
-composer require doards/xrechnung-validatorcomposer
+composer require doards/xrechnung-validator
 ```
 
 ---
