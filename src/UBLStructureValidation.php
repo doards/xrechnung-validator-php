@@ -2,6 +2,8 @@
 
 namespace Doards\XRechnungValidator;
 
+use Exception;
+
 class UBLStructureValidation
 {
     private string $xsdPath;
@@ -19,6 +21,11 @@ class UBLStructureValidation
      */
     public function validate(string $xmlFile, bool $generateHtml = false): array
     {
+        $xmlFile = realpath($xmlFile);
+        if (!$xmlFile || !file_exists($xmlFile)) {
+            throw new Exception("XML file not found: {$xmlFile}");
+        }
+
         libxml_use_internal_errors(true);
         $doc = new \DOMDocument();
         $doc->load($xmlFile);

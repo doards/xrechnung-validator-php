@@ -28,6 +28,11 @@ class EN16931Validator
             throw new Exception('SaxonC extension is not loaded in PHP.');
         }
 
+        $xmlFile = realpath($xmlFile);
+        if (!$xmlFile || !file_exists($xmlFile)) {
+            throw new Exception("XML file not found: {$xmlFile}");
+        }
+
         $proc = new SaxonProcessor();
         $xsltProcessor = $proc->newXslt30Processor();
 
@@ -59,6 +64,12 @@ class EN16931Validator
             $flag = $assert->getAttribute('flag') ?: 'error';
 
             $message = trim($text);
+
+            // Move specific error to warnings
+            if ($message === 'Document MUST not contain empty elements.') {
+                $result['warnings'][] = $message;
+                continue;
+            }
 
             if ($flag === 'fatal' || $flag === 'error') {
                 $result['errors'][] = $message;

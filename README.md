@@ -80,6 +80,57 @@ Errors (in red)
 
 Warnings (in orange)
 
+## Extended Usage
+
+### Running Validation from CLI to Avoid macOS / MAMP Fork() Issues
+
+Because SaxonC can cause stability problems in some environments (notably macOS with MAMP + Apache due to fork() issues), it is recommended to run the validation in a separate PHP CLI script instead of directly through the web server.
+
+Example standalone CLI script (`xrechnung-valid.php`):
+
+```php
+<?php
+require 'vendor/autoload.php';
+
+use Doards\XRechnungValidator\UBLStructureValidation;
+use Doards\XRechnungValidator\EN16931Validator;
+
+// Check if an argument is provided
+if (!isset($argv[1])) {
+    die("Error: No XML file path provided as an argument.\nUsage: php xrechnung-valid.php <path_to_xml_file>\n");
+}
+
+$xmlFile = $argv[1];
+$xsdPath = __DIR__ . '/../vendor/doards/xrechnung-validator/resources/ubl/2.1/xsd/maindoc/UBL-Invoice-2.1.xsd';
+$schematronXsltPath = __DIR__ . '/../vendor/doards/xrechnung-validator/resources/peppol/billing-bis/3.0.18/PEPPOL-EN16931-UBL.xslt';
+
+$structureValidator = new UBLStructureValidation($xsdPath);
+$structureResult = $structureValidator->validate($xmlFile);
+
+$semanticValidator = new EN16931Validator($schematronXsltPath);
+$semanticResult = $semanticValidator->validate($xmlFile);
+
+$output = [
+    "ublValidation" => $structureResult,
+    "invoiceValidation" => $semanticResult,
+];
+
+echo json_encode($output);
+```
+
+Then, from your PHP web app or elsewhere, call this script via shell_exec to avoid SaxonC running inside Apache/MAMP:
+
+```php
+$phpExecutable = PHP_BINDIR . '/php';
+$xmlFile = escapeshellarg($xmlFilePath);
+$output = shell_exec("$phpExecutable /path/to/xrechnung-valid.php $xmlFile 2>&1");
+$result = json_decode($output, true);
+```
+
+For more info on the macOS fork() issue with SaxonC + PHP see:
+https://stackoverflow.com/questions/79671062/saxonc-with-php-on-macos-mamp-causes-nsplaceholderset-initialize-crash-via
+
+
 ## 📄 License
 
 This project is open-source and licensed under the [MIT License](./LICENSE).

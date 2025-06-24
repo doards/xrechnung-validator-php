@@ -11,11 +11,11 @@ $xmlFile = __DIR__ . '/examples/base-example.xml';
 
 echo "▶️  Running UBL structure validation...\n";
 $structureValidator = new UBLStructureValidation($xsdPath);
-$structureResult = $structureValidator->validate($xmlFile, true);
+$structureResult = $structureValidator->validate($xmlFile);
 
 echo "\n▶️  Running EN16931 Schematron validation...\n";
 $semanticValidator = new EN16931Validator($schematronXsltPath);
-$semanticResult = $semanticValidator->validate($xmlFile, true);
+$semanticResult = $semanticValidator->validate($xmlFile);
 
 var_dump($structureResult, true);
 
